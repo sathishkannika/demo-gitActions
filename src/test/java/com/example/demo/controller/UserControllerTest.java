@@ -37,7 +37,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[0].name", is("sathish")))
                 .andExpect(jsonPath("$[1].name", is("mahizhan")));
     }
-/*
     // ─────────────────────────────────────────────
     // GET /api/users/{id}
     // ─────────────────────────────────────────────
@@ -143,5 +142,5 @@ class UserControllerTest {
     void deleteUser_unknownId_returns404() throws Exception {
         mockMvc.perform(delete("/api/users/999"))
                 .andExpect(status().isNotFound());
-    }*/
+    }
 }
