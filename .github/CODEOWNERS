@@ -1,0 +1,23 @@
+# CODEOWNERS
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Each line is a pattern followed by one or more owners.
+# Owners can be GitHub usernames, team slugs (@org/team), or email addresses.
+# The LAST matching rule takes precedence.
+
+# ── Default owner for everything ──────────────────────────────────────────────
+*                               @your-org/backend-team
+
+# ── CI / workflow changes require DevOps review ───────────────────────────────
+.github/                        @your-org/devops-team
+
+# ── Source code ───────────────────────────────────────────────────────────────
+src/main/java/                  @your-org/backend-team
+src/test/java/                  @your-org/backend-team @your-org/qa-team
+
+# ── Configuration & build ─────────────────────────────────────────────────────
+pom.xml                         @your-org/backend-team @your-org/devops-team
+src/main/resources/             @your-org/backend-team
+
+# ── Security-sensitive files ──────────────────────────────────────────────────
+src/main/resources/application-prod.yml   @your-org/security-team
