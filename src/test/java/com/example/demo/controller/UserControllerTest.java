@@ -35,7 +35,7 @@ class UserControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
                 .andExpect(jsonPath("$[0].name", is("sathish")))
-                .andExpect(jsonPath("$[1].name", is("mahizhan")));
+                .andExpect(jsonPath("$[1].name", is("mahizhan1")));
     }
     // ─────────────────────────────────────────────
     // GET /api/users/{id}
