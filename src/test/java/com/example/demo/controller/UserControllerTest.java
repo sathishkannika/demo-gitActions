@@ -34,8 +34,8 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
-                .andExpect(jsonPath("$[0].name", is("Alice")))
-                .andExpect(jsonPath("$[1].name", is("Bob")));
+                .andExpect(jsonPath("$[0].name", is("sathish")))
+                .andExpect(jsonPath("$[1].name", is("kannan")));
     }
 
     // ─────────────────────────────────────────────
@@ -48,8 +48,8 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Alice")))
-                .andExpect(jsonPath("$.email", is("alice@example.com")));
+                .andExpect(jsonPath("$.name", is("sathish")))
+                .andExpect(jsonPath("$.email", is("sathish@example.com")));
     }
 
     @Test
