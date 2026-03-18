@@ -94,7 +94,7 @@ jobs:
   #   . SpotBugs    - bytecode bug analysis
   #   . JaCoCo      - code coverage (fails if < 70%)
   #   . PMD         - static code analysis
-  #   . OWASP       - dependency vulnerability scan
+  #   . OWASP       - dependency vulnerability scan (disabled — add NVD_API_KEY secret to re-enable)
   # ─────────────────────────────────────────────
   code-quality:
     name: Code Quality
@@ -146,26 +146,4 @@ jobs:
         with:
           name: pmd-report
           path: target/pmd.xml
-          retention-days: 7
-
-      - name: Cache OWASP NVD database
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: owasp-nvd-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: owasp-nvd-${{ runner.os }}-
-
-      - name: Run OWASP Dependency-Check
-        run: |
-          mvn --batch-mode --no-transfer-progress \
-            org.owasp:dependency-check-maven:check \
-            -DfailBuildOnCVSS=7 \
-            -Dformats=HTML,JSON
-
-      - name: Upload OWASP report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: owasp-report
-          path: target/dependency-check-report.*
           retention-days: 7
