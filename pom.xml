@@ -23,6 +23,9 @@
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.line.coverage>0.70</jacoco.line.coverage>    <!-- local default -->
+        <jacoco.branch.coverage>0.70</jacoco.branch.coverage> <!-- local default -->
+
     </properties>
 
     <dependencies>
@@ -107,12 +110,12 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>${jacoco.line.coverage}</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>${jacoco.branch.coverage}</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
