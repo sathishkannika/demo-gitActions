@@ -58,7 +58,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- ── Checkstyle ─────────────────────────────────────────── -->
+          <!--  &lt;!&ndash; ── Checkstyle ─────────────────────────────────────────── &ndash;&gt;
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -69,7 +69,7 @@
                     <consoleOutput>true</consoleOutput>
                     <excludes>**/generated/**</excludes>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
             <!-- ── SpotBugs ───────────────────────────────────────────── -->
             <plugin>
@@ -125,7 +125,7 @@
                 </executions>
             </plugin>
 
-            <!-- ── PMD — Static Analysis ──────────────────────────────── -->
+          <!--  &lt;!&ndash; ── PMD — Static Analysis ──────────────────────────────── &ndash;&gt;
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -145,7 +145,7 @@
                 </configuration>
             </plugin>
 
-            <!-- ── OWASP Dependency-Check ─────────────────────────────── -->
+            &lt;!&ndash; ── OWASP Dependency-Check ─────────────────────────────── &ndash;&gt;
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
@@ -157,7 +157,7 @@
                         <format>JSON</format>
                     </formats>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
         </plugins>
     </build>

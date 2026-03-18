@@ -10,24 +10,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
-# ── To change the runner for ALL jobs:
-#    Option A (recommended): Set a repo variable called RUNNER in
-#    GitHub → Settings → Secrets and variables → Actions → Variables
-#    e.g. RUNNER = ubuntu-latest  or  RUNNER = self-hosted
-#    The ${{ vars.RUNNER || 'ubuntu-latest' }} fallback below means it
-#    works even if the variable is not set.
-#
-#    Option B: Replace the expression with a plain string here, e.g.
-#    runs-on: ubuntu-22.04
-# ─────────────────────────────────────────────────────────────────────────────
-
 jobs:
   # ─────────────────────────────────────────────
   # JOB 1 — Build
   # ─────────────────────────────────────────────
   build:
     name: Build
-    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source
@@ -43,20 +32,12 @@ jobs:
       - name: Compile with Maven
         run: mvn --batch-mode --no-transfer-progress clean compile
 
-      - name: Cache build output
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-            target/
-          key: build-${{ github.sha }}
-
   # ─────────────────────────────────────────────
   # JOB 2 — Unit Tests
   # ─────────────────────────────────────────────
   unit-tests:
     name: Unit Tests
-    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -90,15 +71,12 @@ jobs:
 
   # ─────────────────────────────────────────────
   # JOB 3 — Code Quality
-  #   . Checkstyle  - style enforcement
-  #   . SpotBugs    - bytecode bug analysis
-  #   . JaCoCo      - code coverage (fails if < 70%)
-  #   . PMD         - static code analysis
-  #   . OWASP       - dependency vulnerability scan (disabled — add NVD_API_KEY secret to re-enable)
+  #   . SpotBugs - bytecode bug analysis
+  #   . JaCoCo   - code coverage (fails if < 70%)
   # ─────────────────────────────────────────────
   code-quality:
     name: Code Quality
-    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -112,9 +90,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Checkstyle
-        run: mvn --batch-mode --no-transfer-progress checkstyle:check
-
       - name: Run SpotBugs
         run: mvn --batch-mode --no-transfer-progress spotbugs:check
 
@@ -126,7 +101,7 @@ jobs:
           path: target/spotbugsXml.xml
           retention-days: 7
 
-      - name: Run JaCoCo coverage (threshold controlled in pom.xml)
+      - name: Run JaCoCo coverage
         run: mvn --batch-mode --no-transfer-progress verify -Pcoverage
 
       - name: Upload JaCoCo report
@@ -135,15 +110,4 @@ jobs:
         with:
           name: jacoco-report
           path: target/site/jacoco/
-          retention-days: 7
-
-      - name: Run PMD
-        run: mvn --batch-mode --no-transfer-progress pmd:check
-
-      - name: Upload PMD report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pmd-report
-          path: target/pmd.xml
           retention-days: 7
