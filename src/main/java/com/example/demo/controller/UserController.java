@@ -20,8 +20,8 @@ public class UserController {
 
     public UserController() {
         // Seed with two users for demo purposes
-        userStore.add(new User(idCounter.getAndIncrement(), "Alice", "alice@example.com"));
-        userStore.add(new User(idCounter.getAndIncrement(), "Bob", "bob@example.com"));
+        userStore.add(new User(idCounter.getAndIncrement(), "sathish", "alice@example.com"));
+        userStore.add(new User(idCounter.getAndIncrement(), "kannan", "bob@example.com"));
     }
 
     /** GET /api/users — return all users */
