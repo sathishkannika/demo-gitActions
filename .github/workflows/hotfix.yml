@@ -60,7 +60,7 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: hotfix-surefire-reports
           path: target/surefire-reports/
@@ -98,7 +98,7 @@ jobs:
 
       - name: Upload JaCoCo report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: hotfix-jacoco-report
           path: target/site/jacoco/
@@ -139,7 +139,7 @@ jobs:
 
       - name: Upload OWASP report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: hotfix-owasp-report
           path: target/dependency-check-report.*
