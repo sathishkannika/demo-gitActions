@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
-    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!--
   Checkstyle configuration for a Spring Boot POC.
-  Based on Google Java Style — relaxed for practical dev use.
   Place this file at the project root (same level as pom.xml).
 -->
 <module name="Checker">
@@ -13,46 +12,46 @@
     <property name="severity" value="error"/>
     <property name="fileExtensions" value="java"/>
 
-    <!-- ── File-level checks ──────────────────────────────────────────── -->
+    <!-- ── File-level checks (must be direct children of Checker) ─────── -->
 
-    <!-- No tab characters — use spaces -->
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
 
-    <!-- Files must end with a newline -->
     <module name="NewlineAtEndOfFile"/>
 
-    <!-- Max file length -->
     <module name="FileLength">
         <property name="max" value="500"/>
+    </module>
+
+    <!-- LineLength MUST be at Checker level, not inside TreeWalker -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
     </module>
 
     <module name="TreeWalker">
 
         <!-- ── Naming conventions ─────────────────────────────────────── -->
-
-        <module name="TypeName"/>                  <!-- Classes: UpperCamelCase -->
-        <module name="MethodName"/>                <!-- Methods: lowerCamelCase -->
-        <module name="ParameterName"/>             <!-- Params:  lowerCamelCase -->
-        <module name="LocalVariableName"/>         <!-- Locals:  lowerCamelCase -->
-        <module name="MemberName"/>                <!-- Fields:  lowerCamelCase -->
-        <module name="StaticVariableName"/>        <!-- Statics: lowerCamelCase -->
-        <module name="ConstantName"/>              <!-- Constants: UPPER_SNAKE   -->
+        <module name="TypeName"/>
+        <module name="MethodName"/>
+        <module name="ParameterName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="StaticVariableName"/>
+        <module name="ConstantName"/>
         <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
         </module>
 
         <!-- ── Imports ────────────────────────────────────────────────── -->
-
-        <module name="AvoidStarImport"/>           <!-- No import com.example.* -->
-        <module name="UnusedImports"/>             <!-- No unused imports        -->
-        <module name="RedundantImport"/>           <!-- No duplicate imports     -->
+        <module name="AvoidStarImport"/>
+        <module name="UnusedImports"/>
+        <module name="RedundantImport"/>
 
         <!-- ── Whitespace ─────────────────────────────────────────────── -->
-
-        <module name="WhitespaceAround"/>          <!-- Space around operators   -->
-        <module name="WhitespaceAfter"/>           <!-- Space after comma, etc.  -->
+        <module name="WhitespaceAround"/>
+        <module name="WhitespaceAfter"/>
         <module name="NoWhitespaceBefore"/>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>
@@ -60,23 +59,14 @@
         <module name="TypecastParenPad"/>
 
         <!-- ── Braces & blocks ────────────────────────────────────────── -->
-
-        <module name="NeedBraces"/>                <!-- Always use { } -->
+        <module name="NeedBraces"/>
         <module name="LeftCurly"/>
         <module name="RightCurly"/>
         <module name="EmptyBlock">
             <property name="option" value="text"/>
         </module>
 
-        <!-- ── Line length ────────────────────────────────────────────── -->
-
-        <module name="LineLength">
-            <property name="max" value="120"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-        </module>
-
-        <!-- ── Code complexity ────────────────────────────────────────── -->
-
+        <!-- ── Method & complexity ────────────────────────────────────── -->
         <module name="MethodLength">
             <property name="max" value="80"/>
         </module>
@@ -88,32 +78,29 @@
         </module>
 
         <!-- ── Common mistakes ────────────────────────────────────────── -->
-
-        <module name="EmptyStatement"/>            <!-- No lone semicolons       -->
-        <module name="EqualsHashCode"/>            <!-- Override both or neither -->
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
-        <module name="StringLiteralEquality"/>     <!-- Use .equals() not ==     -->
+        <module name="StringLiteralEquality"/>
         <module name="SuperClone"/>
         <module name="SuperFinalize"/>
         <module name="IllegalInstantiation"/>
-        <module name="InnerAssignment"/>           <!-- No assign inside expr    -->
+        <module name="InnerAssignment"/>
         <module name="MagicNumber">
             <property name="ignoreNumbers" value="-1, 0, 1, 2"/>
             <property name="ignoreAnnotation" value="true"/>
         </module>
-        <module name="DefaultComesLast"/>          <!-- default: at end of switch-->
-        <module name="FallThrough"/>               <!-- No fall-through in switch -->
+        <module name="DefaultComesLast"/>
+        <module name="FallThrough"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="UnnecessaryParentheses"/>
 
         <!-- ── Modifiers ──────────────────────────────────────────────── -->
-
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
 
-        <!-- ── Javadoc (relaxed for POC — warns only on public methods) ─ -->
-
+        <!-- ── Javadoc (warning only — won't fail POC build) ─────────── -->
         <module name="MissingJavadocMethod">
             <property name="scope" value="public"/>
             <property name="severity" value="warning"/>
