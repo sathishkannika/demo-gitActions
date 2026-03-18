@@ -10,9 +10,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
-# ── Change the runner here once for all jobs ──────────────────────────────────
-env:
-  RUNNER: ubuntu-latest
+# ── To change the runner for ALL jobs:
+#    Option A (recommended): Set a repo variable called RUNNER in
+#    GitHub → Settings → Secrets and variables → Actions → Variables
+#    e.g. RUNNER = ubuntu-latest  or  RUNNER = self-hosted
+#    The ${{ vars.RUNNER || 'ubuntu-latest' }} fallback below means it
+#    works even if the variable is not set.
+#
+#    Option B: Replace the expression with a plain string here, e.g.
+#    runs-on: ubuntu-22.04
+# ─────────────────────────────────────────────────────────────────────────────
 
 jobs:
   # ─────────────────────────────────────────────
@@ -20,7 +27,7 @@ jobs:
   # ─────────────────────────────────────────────
   build:
     name: Build
-    runs-on: ${{ env.RUNNER }}
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
 
     steps:
       - name: Checkout source
@@ -49,7 +56,7 @@ jobs:
   # ─────────────────────────────────────────────
   unit-tests:
     name: Unit Tests
-    runs-on: ${{ env.RUNNER }}
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     needs: build
 
     steps:
@@ -67,7 +74,7 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress test
 
       - name: Upload test reports
-        if: always()   # upload even on failure so results are visible
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
@@ -83,15 +90,15 @@ jobs:
 
   # ─────────────────────────────────────────────
   # JOB 3 — Code Quality
-  #   · Checkstyle  — style enforcement
-  #   · SpotBugs    — bytecode bug analysis
-  #   · JaCoCo      — code coverage (fails if < 80%)
-  #   · PMD         — static code analysis
-  #   · OWASP       — dependency vulnerability scan
+  #   . Checkstyle  - style enforcement
+  #   . SpotBugs    - bytecode bug analysis
+  #   . JaCoCo      - code coverage (fails if < 70%)
+  #   . PMD         - static code analysis
+  #   . OWASP       - dependency vulnerability scan
   # ─────────────────────────────────────────────
   code-quality:
     name: Code Quality
-    runs-on: ${{ env.RUNNER }}
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     needs: build
 
     steps:
@@ -105,11 +112,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # ── Checkstyle ────────────────────────────────────────────────────
       - name: Run Checkstyle
         run: mvn --batch-mode --no-transfer-progress checkstyle:check
 
-      # ── SpotBugs ──────────────────────────────────────────────────────
       - name: Run SpotBugs
         run: mvn --batch-mode --no-transfer-progress spotbugs:check
 
@@ -121,10 +126,7 @@ jobs:
           path: target/spotbugsXml.xml
           retention-days: 7
 
-      # ── JaCoCo — Code Coverage ────────────────────────────────────────
-      # Runs tests with instrumentation and enforces an 80% line-coverage
-      # minimum. Adjust the <minimum> in your pom.xml to suit your project.
-      - name: Run JaCoCo coverage
+      - name: Run JaCoCo coverage (threshold controlled in pom.xml)
         run: mvn --batch-mode --no-transfer-progress verify -Pcoverage
 
       - name: Upload JaCoCo report
@@ -135,9 +137,6 @@ jobs:
           path: target/site/jacoco/
           retention-days: 7
 
-      # ── PMD — Static Analysis ─────────────────────────────────────────
-      # Detects common code smells: unused variables, empty catch blocks,
-      # overly complex methods, etc.
       - name: Run PMD
         run: mvn --batch-mode --no-transfer-progress pmd:check
 
@@ -149,10 +148,6 @@ jobs:
           path: target/pmd.xml
           retention-days: 7
 
-      # ── OWASP Dependency-Check — Security Scan ────────────────────────
-      # Flags dependencies with known CVEs. Fails on CVSS score ≥ 7 (HIGH).
-      # First run downloads the NVD database (~10 min); subsequent runs use
-      # the cache and complete in ~1–2 min.
       - name: Cache OWASP NVD database
         uses: actions/cache@v4
         with:
