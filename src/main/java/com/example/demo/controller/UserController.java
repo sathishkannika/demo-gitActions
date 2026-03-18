@@ -27,7 +27,7 @@ public class UserController {
     public UserController() {
         // Seed with two users for demo purposes
         userStore.add(new User(idCounter.getAndIncrement(), "sathish", "sathish@example.com"));
-        userStore.add(new User(idCounter.getAndIncrement(), "kannan", "kannan@example.com"));
+        userStore.add(new User(idCounter.getAndIncrement(), "mahizhan", "kannan@example.com"));
     }
 
     /** GET /api/users — return all users */
